@@ -1,0 +1,49 @@
+---
+title: "Election"
+author: "Tanish Thaker"
+format: html
+execute: 
+  echo: false
+---
+
+```{r}
+#| message: false
+#| label: setup
+
+library(tidyverse)
+library(primer.data)
+```
+
+```{r}
+governors |> filter(state == "Massachusetts", status == "Challenger")
+```
+
+Question: How long will Preceptor live to if he wins the election for mayor of Newton?
+
+Units: People who ran for mayor
+
+Outcome: death_age
+
+Model Type: Causal Model
+
+Covariates: election_age
+
+Treatment: Winning the Election
+
+Validity: Might not hold because different states have generally different life expectencies. 
+
+Population Table-
+
+Units: People who ran for governor
+
+Outcome: death_age
+
+Covariates: Sex, election_age
+
+
+
+Stability: Life expectencies change as time passes
+
+Representativness: Data doesn't represent states and not cities
+
+Unconfoundedness: Outside factors lead males to be elected more frequently
