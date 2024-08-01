@@ -70,32 +70,38 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'brms' was built under R version 4.4.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'Rcpp' was built under R version 4.4.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidybayes' was built under R version 4.4.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gtsummary' was built under R version 4.4.1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using 10 posterior draws for ppc type 'dens_overlay' by default.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="election_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 20 × 14
-   state      year first_name last_name party sex   died       status win_margin
-   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
- 1 Massachu…  1946 Robert     Bradford  Repu… Male  1983-03-18 Chall…      8.87 
- 2 Massachu…  1948 Paul       Dever     Demo… Male  1958-04-11 Chall…     18.6  
- 3 Massachu…  1950 Arthur     Coolidge  Repu… Male  1952-01-23 Chall…    -13.2  
- 4 Massachu…  1950 Paul       Dever     Demo… Male  1958-04-11 Chall…     13.2  
- 5 Massachu…  1952 Christian  Herter    Repu… Male  1966-12-30 Chall…      0.618
- 6 Massachu…  1954 Robert     Murphy    Demo… Male  1976-01-09 Chall…     -3.97 
- 7 Massachu…  1956 Foster     Furcolo   Demo… Male  1995-07-05 Chall…      5.91 
- 8 Massachu…  1956 Sumner     Whittier  Repu… Male  2010-01-08 Chall…     -5.91 
- 9 Massachu…  1958 Charles    Gibbons   Repu… Male  1968-02-02 Chall…    -13.2  
-10 Massachu…  1960 John       Volpe     Repu… Male  1994-11-11 Chall…      5.77 
-11 Massachu…  1960 Joseph     Ward      Demo… Male  2003-05-10 Chall…     -5.77 
-12 Massachu…  1962 Endicott   Peabody   Demo… Male  1997-12-01 Chall…      0.258
-13 Massachu…  1964 John       Volpe     Repu… Male  1994-11-11 Chall…      0.989
-14 Massachu…  1966 Edward     Mccormack Demo… Male  1997-02-27 Chall…    -25.8  
-15 Massachu…  1970 Kevin      White     Demo… Male  2012-01-27 Chall…    -14.0  
-16 Massachu…  1978 Francis    Hatch     Repu… Male  2010-04-08 Chall…     -5.33 
-17 Massachu…  1978 Edward     King      Demo… Male  2006-09-18 Chall…      5.33 
-18 Massachu…  1982 John       Sears     Repu… Male  2014-11-04 Chall…    -23.8  
-19 Massachu…  1986 George     Kariotis  Repu… Male  2013-07-07 Chall…    -37.6  
-20 Massachu…  1990 John       Silber    Demo… Male  2012-09-27 Chall…     -3.34 
-# ℹ 5 more variables: region &lt;chr&gt;, population &lt;dbl&gt;, election_age &lt;dbl&gt;,
-#   death_age &lt;dbl&gt;, lived_after &lt;dbl&gt;</code></pre>
+<pre><code>                    Estimate  Est.Error         Q2.5      Q97.5
+Intercept        70.19420849 7.51548890  55.42761295 85.2717736
+election_age      0.09394386 0.09013051  -0.07969129  0.2698833
+treatmentwin      1.86108869 1.47073316  -1.05621484  4.7687986
+partyRepublican   3.51439201 1.44509845   0.68186455  6.3325050
+partyThirdparty -11.60292538 8.44397297 -28.36614288  4.7019602
+sexMale           2.01027517 5.22441390  -8.03763175 12.6074888</code></pre>
 </div>
 </div>
 <p>Question: How long will Preceptor live to if he wins the election for mayor of Newton?</p>
@@ -112,6 +118,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Stability: Life expectencies change as time passes</p>
 <p>Representativness: Data doesn’t represent states and not cities</p>
 <p>Unconfoundedness: Outside factors lead males to be elected more frequently</p>
+<p>Final Paragraph:</p>
 
 </main>
 <!-- /main column -->

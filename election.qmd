@@ -12,11 +12,34 @@ execute:
 
 library(tidyverse)
 library(primer.data)
+library(brms)
+library(tidybayes)
+library(gtsummary)
+
+x <- governors |> 
+  select(death_age, election_age, win_margin, party, sex) |> 
+  mutate(treatment = ifelse(win_margin > 0, "win", "lose")) |> 
+  filter(abs(win_margin) < 5) |>
+  drop_na()
 ```
 
 ```{r}
-governors |> filter(state == "Massachusetts", status == "Challenger")
+#| cache: true
+
+fit_model <- brm(formula = death_age ~ election_age + treatment + party + sex,  
+             data = x,
+             family = gaussian(),
+             refresh = 0,
+             silent = 2,
+             seed = 99)
 ```
+
+```{r}
+pp_check(fit_model)
+
+fixef(fit_model)
+```
+
 
 Question: How long will Preceptor live to if he wins the election for mayor of Newton?
 
@@ -40,10 +63,10 @@ Outcome: death_age
 
 Covariates: Sex, election_age
 
-
-
 Stability: Life expectencies change as time passes
 
 Representativness: Data doesn't represent states and not cities
 
 Unconfoundedness: Outside factors lead males to be elected more frequently
+
+Final Paragraph: 
