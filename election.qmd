@@ -19,14 +19,18 @@ library(gtsummary)
 x <- governors |> 
   select(death_age, election_age, win_margin, party, sex) |> 
   mutate(treatment = ifelse(win_margin > 0, "win", "lose")) |> 
-  filter(abs(win_margin) < 5) |>
-  drop_na()
+  filter(abs(win_margin) < 5)
+
+x2 <- governors |> 
+  select(death_age, election_age, win_margin, party, sex) |> 
+  mutate(treatment = ifelse(win_margin > 0, "win", "lose")) |> 
+  filter(abs(win_margin) < 5, party != "Third Party")
 ```
 
 ```{r}
 #| cache: true
 
-fit_model <- brm(formula = death_age ~ election_age + treatment + party + sex,  
+fit_model1 <- brm(formula = death_age ~ election_age + treatment + party + sex + win_margin,  
              data = x,
              family = gaussian(),
              refresh = 0,
@@ -35,11 +39,27 @@ fit_model <- brm(formula = death_age ~ election_age + treatment + party + sex,
 ```
 
 ```{r}
-pp_check(fit_model)
+#| cache: true
 
-fixef(fit_model)
+fit_model2 <- brm(formula = death_age ~ treatment + party + win_margin,  
+             data = x2,
+             family = gaussian(),
+             refresh = 0,
+             silent = 2,
+             seed = 99)
 ```
 
+```{r}
+tbl_regression(fit_model1)
+pp_check(fit_model1)
+fixef(fit_model1)
+
+tbl_regression(fit_model2)
+pp_check(fit_model2)
+fixef(fit_model2)
+```
+
+$$death\_age = \beta_{0} + \beta_{1} treatment_i + \beta_{2}win\_margin_i + \beta_{4}repub_i + \ beta_{5}thirdparty_i + \epsilon_{i}$$
 
 Question: How long will Preceptor live to if he wins the election for mayor of Newton?
 
