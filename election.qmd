@@ -7,6 +7,7 @@ execute:
 ---
 
 ```{r}
+#| warning: false
 #| message: false
 #| label: setup
 
@@ -20,17 +21,12 @@ x <- governors |>
   select(death_age, election_age, win_margin, party, sex) |> 
   mutate(treatment = ifelse(win_margin > 0, "win", "lose")) |> 
   filter(abs(win_margin) < 5)
-
-x2 <- governors |> 
-  select(death_age, election_age, win_margin, party, sex) |> 
-  mutate(treatment = ifelse(win_margin > 0, "win", "lose")) |> 
-  filter(abs(win_margin) < 5, party != "Third Party")
 ```
 
 ```{r}
 #| cache: true
 
-fit_model1 <- brm(formula = death_age ~ election_age + treatment + party + sex + win_margin,  
+fit_model <- brm(formula = death_age ~ treatment + party + win_margin,  
              data = x,
              family = gaussian(),
              refresh = 0,
@@ -39,54 +35,33 @@ fit_model1 <- brm(formula = death_age ~ election_age + treatment + party + sex +
 ```
 
 ```{r}
-#| cache: true
+ndata <- tibble(expand_grid(treatment = c("win", "lose"), 
+                            party = c("Democrat", "Republican", "Third party"),
+                            win_margin = 0))
 
-fit_model2 <- brm(formula = death_age ~ treatment + party + win_margin,  
-             data = x2,
-             family = gaussian(),
-             refresh = 0,
-             silent = 2,
-             seed = 99)
-```
-
-```{r}
-tbl_regression(fit_model1)
-pp_check(fit_model1)
-fixef(fit_model1)
-
-tbl_regression(fit_model2)
-pp_check(fit_model2)
-fixef(fit_model2)
+fit_model |> 
+  add_epred_draws(newdata = ndata) |>
+  ggplot(aes(x = .epred, y = fct_reorder(party, win_margin))) +
+  stat_slab(position = "dodge", aes(fill = treatment))+
+  labs(
+    title = "Expected Lifespan Given Election Outcome",
+    subtitle = "Winning is associated with about 8 extra years",
+    x = "Expected Lifespan",
+    y = "",
+    fill = "Election Result"
+  )
 ```
 
 $$death\_age = \beta_{0} + \beta_{1} treatment_i + \beta_{2}win\_margin_i + \beta_{4}repub_i + \ beta_{5}thirdparty_i + \epsilon_{i}$$
 
-Question: How long will Preceptor live to if he wins the election for mayor of Newton?
+Using data about US governor candidates from the years 1945 - 2012, we seek to find the relationship between the longevity of Preceptor David Kane and whether or not he wins the Mayoral Election in Newton, MA. Modern medicine has increased the overall lifespan of all candidates regardless of if they won or lost. We modeled age of death as a sum of election result (won/lost), age during election, political party and the win margin. We expect Preceptor to live an extra 8 years (plus/minus 6 years) if he were to win the Mayorial election.
 
-Units: People who ran for mayor
 
-Outcome: death_age
+```{r}
+#| warning: false
 
-Model Type: Causal Model
+tbl_regression(fit_model)
+pp_check(fit_model)
+fixef(fit_model)
+```
 
-Covariates: election_age
-
-Treatment: Winning the Election
-
-Validity: Might not hold because different states have generally different life expectencies. 
-
-Population Table-
-
-Units: People who ran for governor
-
-Outcome: death_age
-
-Covariates: Sex, election_age
-
-Stability: Life expectencies change as time passes
-
-Representativness: Data doesn't represent states and not cities
-
-Unconfoundedness: Outside factors lead males to be elected more frequently
-
-Final Paragraph: 
